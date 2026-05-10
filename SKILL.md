@@ -93,7 +93,7 @@ GCClassic/
 └── AUTHORS.txt
 ```
 
-After `git clone --recurse-submodules`, `src/GEOS-Chem` contains the science codebase, `src/HEMCO` contains the emissions module, `src/Cloud-J` contains the photolysis module.
+After `git clone --recurse-submodules`, `src/GEOS-Chem` contains the science codebase. Note that **`HEMCO` and `Cloud-J` are nested submodules under `src/GEOS-Chem/src/`**, not direct children of `GCClassic/src/`. Verify the path before pointing tooling at them.
 
 ---
 
@@ -107,7 +107,7 @@ After `git clone --recurse-submodules`, `src/GEOS-Chem` contains the science cod
    - `HISTORY.rc`, diagnostic output (collections, variables, frequencies)
    - `species_database.yml`, species metadata
 4. **Spack-based environment is recommended.** Manually managing NetCDF/MPI/HDF5 versions is a common source of build failures; use the provided spack env.
-5. **For high-resolution (≤ 0.5°) runs, use GCHP**, not Classic. Classic is OpenMP single-node.
+5. **GCHP is required for high-resolution *global* runs** because of the lat-lon polar singularity, not just resolution per se. GCClassic frequently runs nested high-resolution (e.g., 0.25° × 0.3125°) regional simulations. Pick GCHP when you need a global cubed-sphere grid.
 6. **`gcpy` is the official Python toolkit.** Use it for plotting and benchmarking; ad-hoc xarray scripts work but lose convenience.
 
 ---
@@ -125,6 +125,16 @@ After `git clone --recurse-submodules`, `src/GEOS-Chem` contains the science cod
 | reference/gcpy.md | Python post-processing |
 | reference/debugging.md | Common errors |
 
+## Critical agent gotchas (Gemini-reviewed)
+
+- **`ExtData` directory is required and large.** GEOS-Chem cannot run without a meteorology + emissions data tree (multi-terabyte for full configurations). Path is set in `HEMCO_Config.rc`. Verify before launching.
+- **Restart file must exist** (`GEOSChem.Restart.<date>.nc4` or similar). For a fresh run, source one from the GEOS-Chem benchmarks or generate via spin-up.
+- **`HEMCO_Diagn.rc` is the missing config most users forget.** It controls emissions diagnostics; roughly half of new-user issues are emissions debugging that need this file.
+- **NetCDF-Fortran is mandatory.** NetCDF-C alone is insufficient.
+- **`createRunDir.sh` is interactive.** It prompts for paths and configuration choices; agents need to either drive it via stdin or use the silent-input mode (check the script for the env-var-driven path).
+- **`geoschem_config.yml` vs `input.geos`:** YAML config is v13.0+. Older versions (≤ 12.x) use `input.geos`. Check the GEOS-Chem version before assuming the format.
+- **Online vs offline:** GEOS-Chem also runs online inside GEOS ESM and CESM, not just offline-driven. The "offline-driven" framing applies to GCClassic.
+
 ## Status
 
-Scaffold (v0.1.0-scaffold). Layout, submodule structure, and configuration-file convention verified against the cloned tree. This is a priority skill for full deep-dive after scaffold pass.
+Scaffold (v0.1.0-scaffold). Layout, submodule structure, and configuration-file convention verified against the cloned tree, with Gemini critique pass on 2026-05-09 to correct submodule nesting and high-resolution guidance. Priority skill for full deep-dive after scaffold pass.
