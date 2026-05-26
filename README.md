@@ -22,6 +22,33 @@ A guide to building, running, configuring, and post-processing GEOS-Chem. Covers
 
 Scaffold. Layout and submodule structure verified against the cloned `geoschem/GCClassic` tree. Priority skill for full deep-dive.
 
+## Acknowledgments
+
+**Gold-standard references for GEOS-Chem** (use these to cross-check anything in this skill):
+- GEOS-Chem documentation portal: https://geos-chem.readthedocs.io/
+- geoschem/GCClassic wrapper repository: https://github.com/geoschem/GCClassic
+- geoschem/geos-chem source repository: https://github.com/geoschem/geos-chem
+- geoschem/HEMCO emissions module: https://github.com/geoschem/HEMCO
+- gcpy Python toolkit: https://github.com/geoschem/gcpy
+
+This scaffold exists only because of the work of other people, and any value
+it has is borrowed from theirs.
+
+- The **Harvard Atmospheric Chemistry Modeling Group** and the broader
+  **GEOS-Chem Steering Committee + International GEOS-Chem User Community**
+  for building and maintaining
+  [geoschem/GCClassic](https://github.com/geoschem/GCClassic), the
+  `geos-chem` and `HEMCO` submodules, the `gcpy` Python toolkit, and the
+  wiki / Confluence documentation this skill leans on.
+- The maintainers of **GCHP** (high-performance variant) for the alternative
+  execution path that this skill routes to when users need MPI scaling.
+- **Zesen Huang** for [laps-skill](https://github.com/huangzesen/laps-skill),
+  the progressive-disclosure layout this repo borrows.
+
+Any errors, oversimplifications, or out-of-date claims in this skill are the
+skill author's responsibility, not the upstream community's. This is a
+scaffold; operational depth is being filled in iteratively.
+
 ## License
 
 MIT (skill content). GEOS-Chem itself is MIT-licensed.
